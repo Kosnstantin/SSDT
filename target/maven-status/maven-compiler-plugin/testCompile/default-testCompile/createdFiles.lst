@@ -1,0 +1,3 @@
+com\example\sms\repository\InMemoryStudentRepositoryTest.class
+com\example\sms\service\StudentServiceUnitTest.class
+com\example\sms\model\StudentTest.class

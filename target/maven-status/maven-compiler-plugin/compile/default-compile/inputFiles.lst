@@ -1,0 +1,11 @@
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\Main.java
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\sms\model\BaseEntity.java
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\sms\model\Course.java
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\sms\model\Enrollment.java
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\sms\model\Grade.java
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\sms\model\Group.java
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\sms\model\Student.java
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\sms\repository\InMemoryStudentRepository.java
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\sms\repository\StudentRepository.java
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\sms\service\StudentServiceBean.java
+C:\Users\Gleb3\Desktop\StudManagSys\student-management-system\src\main\java\com\example\sms\service\StudentServiceLocal.java
