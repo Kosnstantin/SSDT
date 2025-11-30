@@ -1,11 +1,2 @@
 com\example\sms\model\BaseEntity.class
-com\example\sms\repository\StudentRepository.class
 com\example\Main.class
-com\example\sms\model\Grade.class
-com\example\sms\service\StudentServiceBean.class
-com\example\sms\model\Enrollment.class
-com\example\sms\model\Student.class
-com\example\sms\model\Group.class
-com\example\sms\repository\InMemoryStudentRepository.class
-com\example\sms\model\Course.class
-com\example\sms\service\StudentServiceLocal.class

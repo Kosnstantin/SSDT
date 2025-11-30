@@ -1,11 +1,21 @@
 package com.example.sms.model;
 
+import jakarta.persistence.*; // Імпортуємо JPA
 import java.time.Instant;
 import java.util.Objects;
 
+@MappedSuperclass // Вказує, що це базовий клас для сутностей
 public abstract class BaseEntity {
+
+    @Id // Первинний ключ
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Автоінкремент
+    @Column(name = "id")
     protected Integer id;
+
+    @Column(name = "created_at", updatable = false)
     protected Instant createdAt;
+
+    @Column(name = "updated_at")
     protected Instant updatedAt;
 
     public BaseEntity() {
@@ -13,12 +23,22 @@ public abstract class BaseEntity {
         this.updatedAt = Instant.now();
     }
 
+    // Метод PreUpdate для автоматичного оновлення updatedAt
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = Instant.now();
+    }
+
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
-
     public Instant getCreatedAt() { return createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }
-    public void touch() { this.updatedAt = Instant.now(); }
+
+    // Метод touch() з 2 лаби не потрібен, якщо є @PreUpdate, 
+    // але лишимо, оскільки сервіс його викликає
+    public void touch() { 
+        this.updatedAt = Instant.now(); 
+    }
 
     @Override
     public boolean equals(Object o) {
