@@ -35,4 +35,10 @@ public class InMemoryStudentRepository implements StudentRepository {
     public boolean existsById(Integer id) {
         return storage.containsKey(id);
     }
+
+    @Override
+    public List<Student> findByLastName(String lastName) {
+        // Заглушка для сумісності
+        return new ArrayList<>(); 
+    }
 }

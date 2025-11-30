@@ -7,17 +7,14 @@ import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-@Stateless // Це EJB-компонент
+@Stateless
 public class JpaStudentRepository implements StudentRepository {
 
-    // 1. Ін'єктуємо EntityManager
     @PersistenceContext(unitName = "sms-persistence-unit")
     private EntityManager em;
 
     @Override
     public Student save(Student s) {
-        // Метод touch() викликається у сервісному шарі
-        // em.persist() - для нового, em.merge() - для існуючого
         if (s.getId() == null) {
             em.persist(s);
             return s;
@@ -28,32 +25,33 @@ public class JpaStudentRepository implements StudentRepository {
 
     @Override
     public Optional<Student> findById(Integer id) {
-        // em.find() шукає за первинним ключем
-        Student student = em.find(Student.class, id);
-        return Optional.ofNullable(student);
+        return Optional.ofNullable(em.find(Student.class, id));
     }
 
     @Override
     public List<Student> findAll() {
-        // Використовуємо JPQL (Java Persistence Query Language)
-        return em.createQuery("SELECT s FROM Student s", Student.class)
-                 .getResultList();
+        return em.createQuery("SELECT s FROM Student s", Student.class).getResultList();
     }
 
     @Override
     public void deleteById(Integer id) {
-        // Треба спочатку знайти сутність, а потім видалити
-        findById(id).ifPresent(student -> {
-            em.remove(student);
-        });
+        findById(id).ifPresent(student -> em.remove(student));
     }
 
     @Override
     public boolean existsById(Integer id) {
-        // Ефективний запит, щоб перевірити існування
         Long count = em.createQuery("SELECT COUNT(s) FROM Student s WHERE s.id = :id", Long.class)
                        .setParameter("id", id)
                        .getSingleResult();
         return count > 0;
+    }
+
+    // Реалізація нового методу для 4 лаби
+    @Override
+    public List<Student> findByLastName(String lastName) {
+        // Використання JPQL параметризованого запиту
+        return em.createQuery("SELECT s FROM Student s WHERE s.lastName = :lname", Student.class)
+                 .setParameter("lname", lastName)
+                 .getResultList();
     }
 }

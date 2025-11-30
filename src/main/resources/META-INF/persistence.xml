@@ -10,6 +10,8 @@
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+        <class>com.example.sms.model.Person</class>
+
         <class>com.example.sms.model.Student</class>
         <class>com.example.sms.model.Group</class>
         <class>com.example.sms.model.Course</class>

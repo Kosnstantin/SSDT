@@ -10,4 +10,7 @@ public interface StudentRepository {
     List<Student> findAll();
     void deleteById(Integer id);
     boolean existsById(Integer id);
+    
+    // новий метод для 4 лаби
+    List<Student> findByLastName(String lastName);
 }
