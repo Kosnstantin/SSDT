@@ -1,12 +1,15 @@
+com\example\sms\repository\GroupRepository.class
 com\example\sms\model\BaseEntity.class
 com\example\sms\repository\StudentRepository.class
 com\example\sms\repository\JpaStudentRepository.class
 com\example\Main.class
+com\example\sms\controller\StudentController.class
 com\example\sms\model\Group.class
 com\example\sms\repository\InMemoryStudentRepository.class
 com\example\sms\repository\TeacherRepository.class
 com\example\sms\model\Course.class
 com\example\sms\model\Teacher.class
+com\example\sms\repository\JpaGroupRepository.class
 com\example\sms\model\Grade.class
 com\example\sms\service\StudentServiceBean.class
 com\example\sms\model\Enrollment.class
@@ -14,3 +17,4 @@ com\example\sms\model\Person.class
 com\example\sms\model\Student.class
 com\example\sms\repository\JpaTeacherRepository.class
 com\example\sms\service\StudentServiceLocal.class
+com\example\sms\util\EmailValidator.class

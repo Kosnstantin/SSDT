@@ -12,7 +12,7 @@ public class Student extends Person {
     @Column(name = "dob")
     private String dob;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id")
     private Group group;
 

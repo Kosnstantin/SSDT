@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:my="jakarta.faces.composite/util"> <h:head>
+    <title>Edit Student</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .form-grid td { padding: 8px; vertical-align: top; }
+        .btn { padding: 5px 15px; margin-right: 10px; cursor: pointer; }
+        label { font-weight: bold; }
+    </style>
+</h:head>
+<h:body>
+    <h2>Student Details</h2>
+
+    <h:form>
+        <h:panelGrid columns="1" styleClass="form-grid">
+            
+            <my:inputField label="First Name" value="#{studentController.currentStudent.firstName}" 
+                           required="true" errorMsg="Name cannot be empty" />
+
+            <my:inputField label="Last Name" value="#{studentController.currentStudent.lastName}" 
+                           required="true" errorMsg="Last name cannot be empty" />
+
+            <h:panelGroup>
+                <h:outputLabel value="Email" for="email" style="display:block; margin-bottom:3px;"/>
+                <h:inputText id="email" value="#{studentController.currentStudent.email}" required="true">
+                    <f:validator validatorId="customEmailValidator" />
+                    <f:ajax event="blur" render="emailMsg" />
+                </h:inputText>
+                <h:message id="emailMsg" for="email" style="color:red; margin-left: 10px;" />
+            </h:panelGroup>
+
+            <my:inputField label="Birth Date" value="#{studentController.currentStudent.dob}" />
+
+            <h:panelGroup>
+                <h:outputLabel value="Group" for="group" style="display:block; margin-bottom:3px;"/>
+                <h:selectOneMenu id="group" value="#{studentController.selectedGroupId}">
+                    <f:selectItem itemLabel="-- Select Group --" itemValue="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{studentController.allGroups}" var="g" 
+                                   itemLabel="#{g.name} (#{g.year})" itemValue="#{g.id}" />
+                </h:selectOneMenu>
+            </h:panelGroup>
+
+        </h:panelGrid>
+
+        <br/>
+        <div style="margin-top: 15px;">
+            <h:commandButton value="Save" action="#{studentController.save}" styleClass="btn" />
+            <h:button value="Cancel" outcome="students-list" styleClass="btn" />
+        </div>
+    </h:form>
+</h:body>
+</html>

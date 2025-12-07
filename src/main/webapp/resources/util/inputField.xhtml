@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:cc="jakarta.faces.composite">
+    
+    <cc:interface>
+        <cc:attribute name="label" required="true" />
+        <cc:attribute name="value" required="true" />
+        <cc:attribute name="required" default="false" />
+        <cc:attribute name="errorMsg" default="Value is required" />
+    </cc:interface>
+
+    <cc:implementation>
+        <div style="margin-bottom: 10px;">
+            <h:outputLabel value="#{cc.attrs.label}" for="inp" style="display:block; font-weight:bold; margin-bottom: 3px;"/>
+            
+            <h:inputText id="inp" value="#{cc.attrs.value}" 
+                         required="#{cc.attrs.required}" 
+                         requiredMessage="#{cc.attrs.errorMsg}">
+                <f:ajax event="blur" render="msg" />
+            </h:inputText>
+            
+            <h:message id="msg" for="inp" style="color:red; margin-left: 10px; font-size: 0.9em;" />
+        </div>
+    </cc:implementation>
+</html>

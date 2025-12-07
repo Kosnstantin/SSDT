@@ -1,31 +1,57 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:f="jakarta.faces.core">
 <h:head>
     <title>List of Students</title>
+    <style>
+        table { border-collapse: collapse; width: 80%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
 </h:head>
 <h:body>
-    <h2>Students List (Prototype)</h2>
-    
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Test Student</td>
-                <td>test@example.com</td>
-            </tr>
-        </tbody>
-    </table>
+    <h2>Students List</h2>
 
-    <br/>
-    <h:link value="Back to Home" outcome="index" />
+    <h:form>
+        <h:commandButton value="Add New Student" action="student-edit?faces-redirect=true" 
+                         actionListener="#{studentController.prepareCreate}" />
+        <br/><br/>
+
+        <h:dataTable value="#{studentController.students}" var="s">
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                #{s.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">First Name</f:facet>
+                #{s.firstName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Last Name</f:facet>
+                #{s.lastName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Email</f:facet>
+                #{s.email}
+            </h:column>
+            <h:column>
+                 <f:facet name="header">Group</f:facet>
+                 #{s.group != null ? s.group.name : '-'}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Actions</f:facet>
+                
+                <h:commandButton value="Edit" action="student-edit?faces-redirect=true" 
+                                 actionListener="#{studentController.prepareEdit(s)}" />
+                
+                <h:commandButton value="Delete" action="#{studentController.delete(s.id)}" 
+                                 onclick="return confirm('Are you sure?');" />
+            </h:column>
+        </h:dataTable>
+
+        <br/>
+        <h:link value="Back to Home" outcome="index" />
+    </h:form>
 </h:body>
 </html>
