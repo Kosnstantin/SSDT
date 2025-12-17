@@ -17,10 +17,10 @@ public class Teacher extends Person {
 
     public Teacher() {}
 
-    public Teacher(Integer id, String firstName, String lastName, String email, String degree) {
-        super(id, firstName, lastName, email);
-        this.degree = degree;
-    }
+    public Teacher(Integer id, String firstName, String lastName, String email, String username, String password, String degree) {
+    super(id, firstName, lastName, email, username, password, Role.TEACHER); // Передаємо роль TEACHER
+    this.degree = degree;
+}
 
     public String getDegree() { return degree; }
     public void setDegree(String degree) { this.degree = degree; }

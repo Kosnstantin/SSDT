@@ -18,8 +18,8 @@ public class Course extends BaseEntity {
     private Integer credits;
 
     // Зв'язок Many-to-One з Teacher
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacher_id") // Це створить стовпець teacher_id у таблиці courses (Foreign Key)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "teacher_id") 
     private Teacher teacher;
 
     // Зв'язок: один курс має багато зарахувань (Enrollments)

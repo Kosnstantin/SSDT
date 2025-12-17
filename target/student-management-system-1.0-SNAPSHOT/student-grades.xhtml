@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">My Grades</ui:define>
+
+    <ui:define name="content">
+        <style>
+        .grade-pass { color: green; font-weight: bold; }
+        .grade-fail { color: red; font-weight: bold; }
+        </style>
+        <h2>My Academic Performance</h2>
+        
+        <h:dataTable value="#{gradeController.myGrades}" var="g" 
+                     styleClass="table" border="1" cellpadding="10" 
+                     style="width:100%; border-collapse: collapse; margin-top: 15px; background: white;">
+            
+            <h:column>
+                <f:facet name="header">Course Code</f:facet>
+                #{g.enrollment.course.code}
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Course Title</f:facet>
+                #{g.enrollment.course.title}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Semester</f:facet>
+                #{g.enrollment.semester}
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Teacher</f:facet>
+                #{g.enrollment.course.teacher.firstName} #{g.enrollment.course.teacher.lastName}
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Date</f:facet>
+                #{g.date}
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Value</f:facet>
+                <b>#{g.value}</b>
+            </h:column>
+
+            <h:column>
+            <f:facet name="header">Grade</f:facet>
+            <span class="#{g.cssClass}">
+                #{g.letter}
+            </span>
+        </h:column>
+            
+        </h:dataTable>
+        
+        <h:panelGroup rendered="#{empty gradeController.myGrades}">
+            <p>No grades available yet.</p>
+        </h:panelGroup>
+
+        <br/>
+        <h:link value="Back to Dashboard" outcome="index" style="color: #007bff; text-decoration: underline;"/>
+    </ui:define>
+</ui:composition>

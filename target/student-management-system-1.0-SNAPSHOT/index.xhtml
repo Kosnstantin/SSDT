@@ -1,14 +1,122 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core">
-<h:head>
-    <title>Student Management System</title>
-</h:head>
-<h:body>
-    <h1>Welcome to SMS</h1>
-    <p>System is running successfully!</p>
-    
-    <h:link value="View Students List (Prototype)" outcome="students-list" />
-</h:body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">Dashboard</ui:define>
+
+    <ui:define name="content">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="margin-bottom: 10px;">Welcome to Student Management System</h1>
+            <p style="font-size: 1.1em; color: #555;">
+                Logged in as: <span style="color: #000; font-weight: bold;">#{loginController.currentUser.firstName} #{loginController.currentUser.lastName}</span>
+                <span style="background: #eee; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-left: 5px;">
+                    #{loginController.currentUser.role}
+                </span>
+            </p>
+        </div>
+
+        <h:panelGroup rendered="#{loginController.admin}">
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                
+                <div style="border:1px solid #ddd; padding:20px; width:220px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">🎓 Students</h3>
+                    <p style="color: #666; font-size: 0.9em;">Manage student profiles.</p>
+                    <h:button value="Manage Students" outcome="students-list" 
+                              style="background-color: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+
+                <div style="border:1px solid #ddd; padding:20px; width:220px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">👨‍🏫 Teachers</h3>
+                    <p style="color: #666; font-size: 0.9em;">Manage staff &amp; hires.</p>
+                    <h:button value="Manage Teachers" outcome="teachers-list" 
+                              style="background-color: #fd7e14; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+
+                <div style="border:1px solid #ddd; padding:20px; width:220px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">📚 Courses</h3>
+                    <p style="color: #666; font-size: 0.9em;">Create &amp; assign courses.</p>
+                    <h:button value="Manage Courses" outcome="admin-courses" 
+                              style="background-color: #17a2b8; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+
+                <div style="border:1px solid #ddd; padding:20px; width:220px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">🏫 Groups</h3>
+                    <p style="color: #666; font-size: 0.9em;">Manage study groups.</p>
+                    <h:button value="Manage Groups" outcome="groups-list" 
+                              style="background-color: #6f42c1; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+                
+                <div style="border:1px solid #ddd; padding:20px; width:220px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">📝 Enrollments</h3>
+                    <p style="color: #666; font-size: 0.9em;">Assign students to courses.</p>
+                    <h:button value="Manage Enrollments" outcome="manage-enrollments" 
+                              style="background-color: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+            </div>
+        </h:panelGroup>
+
+
+        <h:panelGroup rendered="#{loginController.dean}">
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                
+                <div style="border:1px solid #ddd; padding:20px; width:220px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">🎓 Students</h3>
+                    <p style="color: #666; font-size: 0.9em;">Manage student profiles.</p>
+                    <h:button value="Manage Students" outcome="students-list" 
+                              style="background-color: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+
+                <div style="border:1px solid #ddd; padding:20px; width:220px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">📝 Enrollments</h3>
+                    <p style="color: #666; font-size: 0.9em;">Assign students to courses.</p>
+                    <h:button value="Manage Enrollments" outcome="manage-enrollments" 
+                              style="background-color: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+
+                <div style="border:1px solid #ddd; padding:20px; width:220px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">🏫 Groups</h3>
+                    <p style="color: #666; font-size: 0.9em;">Manage study groups.</p>
+                    <h:button value="Manage Groups" outcome="groups-list" 
+                              style="background-color: #6f42c1; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+                
+                 <div style="border:1px solid #ddd; padding:20px; width:220px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">📚 Courses</h3>
+                    <p style="color: #666; font-size: 0.9em;">View course catalog.</p>
+                    <h:button value="View Courses" outcome="admin-courses" 
+                              style="background-color: #17a2b8; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+            </div>
+        </h:panelGroup>
+
+
+        <h:panelGroup rendered="#{loginController.teacher}">
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                
+                <div style="border:1px solid #ddd; padding:20px; width:240px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">📘 My Courses</h3>
+                    <p style="color: #666; font-size: 0.9em;">View your classes and grade students.</p>
+                    <h:button value="Open Gradebook" outcome="teacher-courses" 
+                              style="background-color: #17a2b8; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+                
+            </div>
+        </h:panelGroup>
+
+
+        <h:panelGroup rendered="#{loginController.student}">
+             <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                
+                <div style="border:1px solid #ddd; padding:20px; width:240px; text-align:center; background: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0;">📊 My Results</h3>
+                    <p style="color: #666; font-size: 0.9em;">Check your latest grades and GPA.</p>
+                    <h:button value="View Grades" outcome="student-grades" 
+                              style="background-color: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;"/>
+                </div>
+
+            </div>
+        </h:panelGroup>
+
+    </ui:define>
+</ui:composition>

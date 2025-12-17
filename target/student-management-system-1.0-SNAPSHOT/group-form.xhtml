@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">
+        #{groupController.currentGroup.id == null ? 'New Group' : 'Edit Group'}
+    </ui:define>
+
+    <ui:define name="content">
+        <div style="max-width: 400px; margin: 0 auto;">
+            <h2>#{groupController.currentGroup.id == null ? 'New Group' : 'Edit Group'}</h2>
+            
+            <h:form>
+                <div style="margin-bottom: 15px;">
+                    <h:outputLabel value="Group Name (e.g. CS-101):" style="display:block; font-weight:bold;"/>
+                    <h:inputText value="#{groupController.currentGroup.name}" required="true" 
+                                 style="width:100%; padding:8px;"/>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h:outputLabel value="Year:" style="display:block; font-weight:bold;"/>
+                    <h:inputText value="#{groupController.currentGroup.year}" required="true" 
+                                 style="width:100%; padding:8px;"/>
+                </div>
+
+                <h:commandButton value="Save Group" action="#{groupController.save}" 
+                                 style="background-color: #28a745; color: white; padding: 10px 20px; border:none; cursor:pointer; margin-right: 10px;"/>
+                
+                <h:button value="Cancel" outcome="groups-list" 
+                          style="background-color: #6c757d; color: white; padding: 10px 20px; border:none; cursor:pointer; text-decoration: none;"/>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

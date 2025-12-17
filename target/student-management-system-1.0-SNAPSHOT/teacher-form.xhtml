@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">
+        #{adminTeacherController.currentTeacher.id == null ? 'New Teacher' : 'Edit Teacher'}
+    </ui:define>
+
+    <ui:define name="content">
+        <div style="max-width: 500px; margin: 0 auto;">
+            <h2>#{adminTeacherController.currentTeacher.id == null ? 'New Teacher' : 'Edit Teacher'}</h2>
+            
+            <h:form>
+                <div style="margin-bottom: 10px;">
+                    <h:outputLabel value="First Name:" style="font-weight:bold; display:block;"/>
+                    <h:inputText value="#{adminTeacherController.currentTeacher.firstName}" required="true" style="width:100%; padding:5px;"/>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <h:outputLabel value="Last Name:" style="font-weight:bold; display:block;"/>
+                    <h:inputText value="#{adminTeacherController.currentTeacher.lastName}" required="true" style="width:100%; padding:5px;"/>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <h:outputLabel value="Degree (e.g. Professor, PhD):" style="font-weight:bold; display:block;"/>
+                    <h:inputText value="#{adminTeacherController.currentTeacher.degree}" style="width:100%; padding:5px;"/>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <h:outputLabel value="Email:" style="font-weight:bold; display:block;"/>
+                    <h:inputText value="#{adminTeacherController.currentTeacher.email}" required="true" style="width:100%; padding:5px;"/>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <h:outputLabel value="Username:" style="font-weight:bold; display:block;"/>
+                    <h:inputText value="#{adminTeacherController.currentTeacher.username}" required="true" style="width:100%; padding:5px;"/>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h:outputLabel value="Password:" style="font-weight:bold; display:block;"/>
+                    <h:inputSecret value="#{adminTeacherController.currentTeacher.password}" 
+                                   required="#{adminTeacherController.currentTeacher.id == null}"
+                                   redisplay="true"
+                                   style="width:100%; padding:5px;">
+                         <f:passThroughAttribute name="placeholder" value="Leave empty to keep current password" />
+                    </h:inputSecret>
+                </div>
+
+                <h:commandButton value="Save Teacher" action="#{adminTeacherController.save}" 
+                                 style="background-color: #28a745; color: white; padding: 10px 20px; border:none; cursor:pointer; margin-right: 10px;"/>
+                
+                <h:button value="Cancel" outcome="teachers-list" 
+                          style="background-color: #6c757d; color: white; padding: 10px 20px; border:none; cursor:pointer; text-decoration: none;"/>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

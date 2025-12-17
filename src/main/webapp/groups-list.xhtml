@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">Manage Groups</ui:define>
+
+    <ui:define name="content">
+        <h2>Groups Management</h2>
+
+        <h:form>
+            <h:commandButton value="+ Create New Group" action="#{groupController.prepareCreate}" 
+                             styleClass="btn" style="background-color: #28a745; color: white; margin-bottom: 15px;"/>
+            
+            <h:dataTable value="#{groupController.groups}" var="g" border="1" styleClass="table"
+                         style="width:100%; border-collapse: collapse;">
+                
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{g.id}
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Group Name</f:facet>
+                    <b>#{g.name}</b>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Year</f:facet>
+                    #{g.year}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="Edit" action="#{groupController.prepareEdit(g)}" 
+                                     style="margin-right: 5px; background: #ffc107; border:none; padding:5px; cursor:pointer; border-radius:3px;"/>
+                    
+                    <h:commandButton value="Delete" action="#{groupController.delete(g.id)}" 
+                                     onclick="return confirm('Are you sure? Make sure no students are in this group!');"
+                                     style="background: #dc3545; color: white; border:none; padding:5px; cursor:pointer; border-radius:3px;">
+                         <f:ajax render="@form" />
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

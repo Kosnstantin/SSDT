@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">Manage Courses</ui:define>
+
+    <ui:define name="content">
+        <h2>Courses Management</h2>
+
+        <h:form>
+            <h:commandButton value="+ Create New Course" action="#{courseController.prepareCreate}" 
+                             styleClass="btn" style="background-color: #28a745; color: white; margin-bottom: 15px;"/>
+            
+            <h:dataTable value="#{courseController.courses}" var="c" border="1" styleClass="table"
+                         style="width:100%; border-collapse: collapse;">
+                
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{c.id}
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Code</f:facet>
+                    #{c.code}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Title</f:facet>
+                    #{c.title}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Credits</f:facet>
+                    #{c.credits}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Instructor</f:facet>
+                    #{c.teacher != null ? c.teacher.firstName : '-'} #{c.teacher != null ? c.teacher.lastName : '-'}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="Edit" action="#{courseController.prepareEdit(c)}" 
+                                     style="margin-right: 5px; background: #ffc107; border:none; padding:5px; cursor:pointer; border-radius:3px;"/>
+                    
+                    <h:commandButton value="Delete" action="#{courseController.delete(c.id)}" 
+                                     onclick="return confirm('Are you sure? This will delete all grades associated with this course!');"
+                                     style="background: #dc3545; color: white; border:none; padding:5px; cursor:pointer; border-radius:3px;">
+                         <f:ajax render="@form" />
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

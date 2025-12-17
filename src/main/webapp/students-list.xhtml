@@ -13,7 +13,64 @@
 <h:body>
     <h2>Students List</h2>
 
-    <h:form>
+    <h:form><ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">Students List</ui:define>
+
+    <ui:define name="content">
+        <h:head>
+             <style>
+                table { border-collapse: collapse; width: 100%; margin-top: 20px;}
+                th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+                th { background-color: #f4f4f4; }
+                .btn { padding: 5px 10px; text-decoration: none; background-color: #007bff; color: white; border-radius: 4px; margin-right: 5px;}
+                .btn-del { background-color: #dc3545; }
+            </style>
+        </h:head>
+
+        <h2>Students Management</h2>
+
+        <h:form>
+            <h:commandButton value="Add New Student" action="#{studentController.prepareCreate}" styleClass="btn"/>
+            
+            <h:dataTable value="#{studentController.students}" var="s" border="1">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{s.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">First Name</f:facet>
+                    #{s.firstName}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Last Name</f:facet>
+                    #{s.lastName}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Group</f:facet>
+                    #{s.group != null ? s.group.name : '-'}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    #{s.email}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="Edit" action="#{studentController.prepareEdit(s)}" styleClass="btn" />
+                    
+                    <h:commandButton value="Delete" action="#{studentController.delete(s.id)}" 
+                                     onclick="return confirm('Are you sure?');" styleClass="btn btn-del">
+                         <f:ajax execute="@this" render="@form" />
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
         <h:commandButton value="Add New Student" action="student-edit?faces-redirect=true" 
                          actionListener="#{studentController.prepareCreate}" />
         <br/><br/>

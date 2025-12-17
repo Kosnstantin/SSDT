@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">Manage Teachers</ui:define>
+
+    <ui:define name="content">
+        <h2>Teachers Management</h2>
+
+        <h:form>
+            <h:commandButton value="+ Add New Teacher" action="#{adminTeacherController.prepareCreate}" 
+                             styleClass="btn" style="background-color: #28a745; color: white; margin-bottom: 15px;"/>
+            
+            <h:dataTable value="#{adminTeacherController.teachers}" var="t" border="1" styleClass="table"
+                         style="width:100%; border-collapse: collapse;">
+                
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{t.id}
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    #{t.firstName} #{t.lastName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Degree</f:facet>
+                    #{t.degree}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    #{t.email}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Username</f:facet>
+                    #{t.username}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="Edit" action="#{adminTeacherController.prepareEdit(t)}" 
+                                     style="margin-right: 5px; background: #ffc107; border:none; padding:5px; cursor:pointer; border-radius:3px;"/>
+                    
+                    <h:commandButton value="Delete" action="#{adminTeacherController.delete(t.id)}" 
+                                     onclick="return confirm('Delete teacher? Courses will lose their instructor!');"
+                                     style="background: #dc3545; color: white; border:none; padding:5px; cursor:pointer; border-radius:3px;">
+                         <f:ajax render="@form" />
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

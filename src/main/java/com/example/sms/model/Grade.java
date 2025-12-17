@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class Grade extends BaseEntity {
 
     // Зв'язок: багато оцінок для одного зарахування
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "enrollment_id")
     private Enrollment enrollment;
 
@@ -26,6 +26,20 @@ public class Grade extends BaseEntity {
         this.value = value; 
         this.date = date;
     }
+
+    public String getLetter() {
+        if (value == null) return "-";
+        if (value >= 90) return "A";
+        if (value >= 82) return "B";
+        if (value >= 75) return "C";
+        if (value >= 64) return "D";
+        if (value >= 60) return "E";
+        return "F";
+    }
+
+    public String getCssClass() {
+    return (value != null && value >= 60) ? "grade-pass" : "grade-fail";
+}
 
     // Геттери та сеттери
     public Enrollment getEnrollment() { return enrollment; }

@@ -1,55 +1,125 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core"
-      xmlns:my="jakarta.faces.composite/util"> <h:head>
-    <title>Edit Student</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .form-grid td { padding: 8px; vertical-align: top; }
-        .btn { padding: 5px 15px; margin-right: 10px; cursor: pointer; }
-        label { font-weight: bold; }
-    </style>
-</h:head>
-<h:body>
-    <h2>Student Details</h2>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets" xmlns:my="jakarta.faces.composite/util" template="template.xhtml">
 
-    <h:form>
-        <h:panelGrid columns="1" styleClass="form-grid">
-            
-            <my:inputField label="First Name" value="#{studentController.currentStudent.firstName}" 
-                           required="true" errorMsg="Name cannot be empty" />
+    <ui:define name="title">
+        #{studentController.currentStudent.id == null ? 'New Student' : 'Edit Student'}
+    </ui:define>
 
-            <my:inputField label="Last Name" value="#{studentController.currentStudent.lastName}" 
-                           required="true" errorMsg="Last name cannot be empty" />
+    <ui:define name="content">
+        <style>
+            .form-container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
 
-            <h:panelGroup>
-                <h:outputLabel value="Email" for="email" style="display:block; margin-bottom:3px;"/>
-                <h:inputText id="email" value="#{studentController.currentStudent.email}" required="true">
-                    <f:validator validatorId="customEmailValidator" />
-                    <f:ajax event="blur" render="emailMsg" />
-                </h:inputText>
-                <h:message id="emailMsg" for="email" style="color:red; margin-left: 10px;" />
-            </h:panelGroup>
+            .form-header {
+                border-bottom: 2px solid #eee;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+            }
 
-            <my:inputField label="Birth Date" value="#{studentController.currentStudent.dob}" />
+            .btn-action {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 1em;
+                margin-right: 10px;
+            }
 
-            <h:panelGroup>
-                <h:outputLabel value="Group" for="group" style="display:block; margin-bottom:3px;"/>
-                <h:selectOneMenu id="group" value="#{studentController.selectedGroupId}">
-                    <f:selectItem itemLabel="-- Select Group --" itemValue="#{null}" noSelectionOption="true" />
-                    <f:selectItems value="#{studentController.allGroups}" var="g" 
-                                   itemLabel="#{g.name} (#{g.year})" itemValue="#{g.id}" />
-                </h:selectOneMenu>
-            </h:panelGroup>
+            .btn-save {
+                background-color: #28a745;
+                color: white;
+            }
 
-        </h:panelGrid>
+            .btn-save:hover {
+                background-color: #218838;
+            }
 
-        <br/>
-        <div style="margin-top: 15px;">
-            <h:commandButton value="Save" action="#{studentController.save}" styleClass="btn" />
-            <h:button value="Cancel" outcome="students-list" styleClass="btn" />
+            .btn-cancel {
+                background-color: #6c757d;
+                color: white;
+                text-decoration: none;
+                display: inline-block;
+            }
+
+            .btn-cancel:hover {
+                background-color: #5a6268;
+            }
+
+            /* Стилі для вирівнювання полів */
+            .field-group {
+                margin-bottom: 15px;
+            }
+
+            .field-label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #333;
+            }
+        </style>
+
+        <div class="form-container">
+            <div class="form-header">
+                <h2>#{studentController.currentStudent.id == null ? 'Add New Student' : 'Edit Student Details'}</h2>
+            </div>
+
+            <h:form id="editForm">
+
+                <my:inputField label="First Name" value="#{studentController.currentStudent.firstName}" required="true"
+                    errorMsg="Name cannot be empty" />
+
+                <my:inputField label="Last Name" value="#{studentController.currentStudent.lastName}" required="true"
+                    errorMsg="Last name cannot be empty" />
+
+                <div class="field-group">
+                    <h:outputLabel value="Email" for="email" styleClass="field-label" />
+                    <h:inputText id="email" value="#{studentController.currentStudent.email}" required="true"
+                        style="width: 100%; padding: 8px; box-sizing: border-box;">
+                        <f:validator validatorId="customEmailValidator" />
+                        <f:ajax event="blur" render="emailMsg" />
+                    </h:inputText>
+                    <h:message id="emailMsg" for="email"
+                        style="color:red; font-size: 0.9em; margin-top: 5px; display:block;" />
+                </div>
+
+                <my:inputField label="Username" value="#{studentController.currentStudent.username}" required="true"
+                    errorMsg="Username is required" />
+
+                <div class="field-group">
+                    <h:outputLabel value="Password" for="pwd" styleClass="field-label" />
+
+                    <h:inputSecret id="pwd" value="#{studentController.currentStudent.password}"
+                        required="#{studentController.currentStudent.id == null}" redisplay="true"
+                        style="width: 100%; padding: 8px; box-sizing: border-box;">
+                        <f:passThroughAttribute name="placeholder"
+                            value="#{studentController.currentStudent.id != null ? 'Leave empty to keep current password' : ''}" />
+                    </h:inputSecret>
+
+                    <h:message for="pwd" style="color:red; font-size: 0.9em;" />
+                </div>
+
+                <my:inputField label="Birth Date (yyyy-MM-dd)" value="#{studentController.currentStudent.dob}" />
+
+                <div class="field-group">
+                    <h:outputLabel value="Group" for="group" styleClass="field-label" />
+                    <h:selectOneMenu id="group" value="#{studentController.selectedGroupId}"
+                        style="width: 100%; padding: 8px; box-sizing: border-box;">
+                        <f:selectItem itemLabel="-- Select Group --" itemValue="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{studentController.allGroups}" var="g" itemLabel="#{g.name} (#{g.year})"
+                            itemValue="#{g.id}" />
+                    </h:selectOneMenu>
+                    <h:message for="group" style="color:red" />
+                </div>
+
+                <br />
+
+                <div>
+                    <h:commandButton value="Save" action="#{studentController.save}" styleClass="btn-action btn-save" />
+                    <h:button value="Cancel" outcome="students-list" styleClass="btn-action btn-cancel" />
+                </div>
+            </h:form>
         </div>
-    </h:form>
-</h:body>
-</html>
+    </ui:define>
+</ui:composition>

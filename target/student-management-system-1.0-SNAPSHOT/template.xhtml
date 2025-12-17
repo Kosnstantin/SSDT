@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:ui="jakarta.faces.facelets">
+<h:head>
+    <title>
+        <ui:insert name="title">Student Management</ui:insert>
+    </title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* HEADER AND MENU */
+        .header {
+            background-color: #343a40;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: #ccc;
+            margin-left: 20px;
+            text-decoration: none;
+            font-size: 1em;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        .nav-link.active {
+            color: white;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            min-height: 80vh;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* FOOTER */
+        .footer {
+            background-color: #eee;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .user-info {
+            font-size: 0.9em;
+            color: #adb5bd;
+            margin-right: 15px;
+        }
+    </style>
+</h:head>
+
+<h:body>
+
+    <div class="header">
+        <div>
+            <h:link value="SMS Portal" outcome="index" styleClass="logo" />
+        </div>
+
+        <h:form style="margin:0;">
+            <h:link value="Home" outcome="index" styleClass="nav-link" />
+
+            <h:link value="Students" outcome="students-list" styleClass="nav-link"
+                rendered="#{loginController.admin or loginController.dean}" />
+
+            <h:link value="Groups" outcome="groups-list" styleClass="nav-link" 
+                    rendered="#{loginController.admin or loginController.dean}" />
+
+            <h:link value="Courses" outcome="admin-courses" styleClass="nav-link"
+                rendered="#{loginController.admin or loginController.dean}" />
+
+            <h:link value="Enrollments" outcome="manage-enrollments" styleClass="nav-link"
+                rendered="#{loginController.admin or loginController.dean}" />
+
+            <h:link value="My Courses" outcome="teacher-courses" styleClass="nav-link"
+                rendered="#{loginController.teacher}" />
+
+            <h:link value="My Grades" outcome="student-grades" styleClass="nav-link"
+                rendered="#{loginController.student}" />
+
+            <h:link value="Manage Teachers" outcome="teachers-list" styleClass="nav-link" 
+                    rendered="#{loginController.admin}" />
+
+            <span class="user-info">Signed in as: <b>#{loginController.currentUser.username}</b>
+                (#{loginController.currentUser.role})</span>
+            <h:commandLink value="Logout" action="#{loginController.logout}" styleClass="nav-link"
+                style="color: #ff6b6b;" />
+        </h:form>
+    </div>
+
+    <div class="container">
+        <ui:insert name="content">
+            Default Content
+        </ui:insert>
+    </div>
+
+    <div class="footer">
+        Student Management System © 2025 | Course Project
+    </div>
+
+</h:body>
+
+</html>

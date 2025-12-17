@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">My Courses</ui:define>
+
+    <ui:define name="content">
+        <h2>Teaching Dashboard</h2>
+        <p>Here are the courses you are currently teaching:</p>
+
+        <h:dataTable value="#{teacherController.myCourses}" var="c" 
+                     styleClass="table" border="1" cellpadding="10" 
+                     style="width:100%; border-collapse: collapse; margin-top: 20px; background: white;">
+            
+            <h:column>
+                <f:facet name="header">Code</f:facet>
+                #{c.code}
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Course Title</f:facet>
+                <b>#{c.title}</b>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Credits</f:facet>
+                #{c.credits}
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Actions</f:facet>
+                <h:form>
+                    <h:commandButton value="View Students" action="#{teacherController.viewCourse(c)}" 
+                                     style="background-color: #17a2b8; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;"/>
+                </h:form>
+            </h:column>
+            
+        </h:dataTable>
+
+        <h:panelGroup rendered="#{empty teacherController.myCourses}">
+            <p style="color: gray;">You are not assigned to any courses yet.</p>
+        </h:panelGroup>
+
+        <br/>
+        <h:link value="Back to Dashboard" outcome="index" style="color: #007bff; text-decoration: underline;"/>
+    </ui:define>
+</ui:composition>

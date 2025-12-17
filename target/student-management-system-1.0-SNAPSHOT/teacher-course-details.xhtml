@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">Course Details</ui:define>
+
+    <ui:define name="content">
+        <h:link value="← Back to My Courses" outcome="teacher-courses" 
+                style="display:inline-block; margin-bottom:15px; text-decoration:none; color:#007bff; font-weight:bold;"/>
+
+        <h2>Gradebook: #{teacherController.selectedCourse.title}</h2>
+        
+        <h:messages globalOnly="true" style="color:green; padding:10px; border:1px solid green; margin-bottom:10px;"/>
+
+        <h:form id="studentsForm">
+            <h:dataTable value="#{teacherController.selectedCourseEnrollments}" var="e" 
+                         styleClass="table" border="1" cellpadding="8" 
+                         style="width:100%; border-collapse: collapse; background: white;">
+                
+                <h:column>
+                    <f:facet name="header">Student Name</f:facet>
+                    #{e.student.firstName} #{e.student.lastName}
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Email</f:facet>
+                    <span style="color:gray">#{e.student.email}</span>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Current Grade</f:facet>
+                    <h:outputText value="#{teacherController.getCurrentGradeValue(e)}" style="font-weight:bold;"/>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Actions</f:facet>
+                    <h:commandButton value="Select for Grading" action="#{teacherController.prepareGrading(e)}" 
+                                     style="background-color: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                        <f:ajax render=":gradingPanel" />
+                    </h:commandButton>
+                </h:column>
+
+            </h:dataTable>
+        </h:form>
+        
+        <h:panelGroup id="gradingPanel" layout="block" style="margin-top: 30px; padding: 20px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 5px;">
+            
+            <h3>Assign Grade</h3>
+            
+            <h:panelGroup rendered="#{teacherController.selectedEnrollmentForForm == null}">
+                <p style="color:gray;">Click "Select for Grading" in the table above to start.</p>
+            </h:panelGroup>
+
+            <h:form rendered="#{teacherController.selectedEnrollmentForForm != null}">
+                <h:panelGrid columns="2" cellpadding="10">
+                    
+                    <h:outputLabel value="Student:" style="font-weight:bold;"/>
+                    <h:outputText value="#{teacherController.selectedEnrollmentForForm.student.firstName} #{teacherController.selectedEnrollmentForForm.student.lastName}" 
+                                  style="font-size: 1.2em; color: #333; font-weight: bold;"/>
+
+                    <h:outputLabel value="Score (0-100):" for="scoreInput" style="font-weight:bold;"/>
+                    <h:inputText id="scoreInput" value="#{teacherController.gradeInput}" required="true" 
+                                 style="padding: 5px; width: 80px; font-size: 1.1em;"/>
+
+                    <h:panelGroup/>
+                    <h:panelGroup>
+                        <h:commandButton value="Save Grade" action="#{teacherController.saveGradeFromForm}" 
+                                         style="background-color: #28a745; color: white; padding: 10px 20px; border:none; border-radius: 4px; cursor:pointer; font-weight: bold; margin-right: 10px;"/>
+                        
+                        <h:commandButton value="Cancel" action="#{teacherController.prepareGrading(null)}"
+                                         style="background-color: #6c757d; color: white; padding: 10px 20px; border:none; border-radius: 4px; cursor:pointer;">
+                             <f:ajax render=":gradingPanel"/>
+                        </h:commandButton>
+                    </h:panelGroup>
+                    
+                </h:panelGrid>
+            </h:form>
+        </h:panelGroup>
+
+    </ui:define>
+</ui:composition>

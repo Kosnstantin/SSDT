@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">
+        #{courseController.currentCourse.id == null ? 'New Course' : 'Edit Course'}
+    </ui:define>
+
+    <ui:define name="content">
+        <div style="max-width: 500px; margin: 0 auto;">
+            <h2>#{courseController.currentCourse.id == null ? 'Create Course' : 'Edit Course'}</h2>
+            
+            <h:form>
+                <div style="margin-bottom: 10px;">
+                    <h:outputLabel value="Course Code (e.g. CS-101):" style="display:block; font-weight:bold;"/>
+                    <h:inputText value="#{courseController.currentCourse.code}" required="true" style="width:100%; padding:5px;"/>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <h:outputLabel value="Course Title:" style="display:block; font-weight:bold;"/>
+                    <h:inputText value="#{courseController.currentCourse.title}" required="true" style="width:100%; padding:5px;"/>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <h:outputLabel value="Credits:" style="display:block; font-weight:bold;"/>
+                    <h:inputText value="#{courseController.currentCourse.credits}" style="width:100%; padding:5px;"/>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h:outputLabel value="Assign Teacher:" style="display:block; font-weight:bold;"/>
+                    <h:selectOneMenu value="#{courseController.selectedTeacherId}" style="width:100%; padding:5px;">
+                        <f:selectItem itemLabel="-- Select Teacher --" itemValue="#{null}" />
+                        <f:selectItems value="#{courseController.allTeachers}" var="t"
+                                       itemLabel="#{t.firstName} #{t.lastName} (#{t.degree})"
+                                       itemValue="#{t.id}" />
+                    </h:selectOneMenu>
+                </div>
+
+                <h:commandButton value="Save Course" action="#{courseController.save}" 
+                                 style="background-color: #28a745; color: white; padding: 10px 20px; border:none; cursor:pointer; margin-right: 10px;"/>
+                
+                <h:button value="Cancel" outcome="admin-courses" 
+                          style="background-color: #6c757d; color: white; padding: 10px 20px; border:none; cursor:pointer; text-decoration: none;"/>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

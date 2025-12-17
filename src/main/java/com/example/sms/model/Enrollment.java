@@ -9,12 +9,12 @@ import java.util.List;
 public class Enrollment extends BaseEntity {
 
     // Зв'язок: багато зарахувань для одного студента
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")
     private Student student;
 
     // Зв'язок: багато зарахувань на один курс
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
     private Course course;
 
@@ -25,7 +25,7 @@ public class Enrollment extends BaseEntity {
     private String status;
     
     // Зв'язок: одне зарахування має багато оцінок
-    @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Grade> grades = new ArrayList<>();
 
     public Enrollment() {}

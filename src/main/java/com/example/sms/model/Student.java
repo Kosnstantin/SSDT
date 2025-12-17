@@ -22,11 +22,11 @@ public class Student extends Person {
     public Student() {}
 
     // Конструктор використовує super() для ініціалізації батьківських полів
-    public Student(Integer id, String firstName, String lastName, String email, String dob, Group group) {
-        super(id, firstName, lastName, email);
-        this.dob = dob;
-        this.group = group;
-    }
+    public Student(Integer id, String firstName, String lastName, String email, String username, String password, String dob, Group group) {
+    super(id, firstName, lastName, email, username, password, Role.STUDENT); // Передаємо роль STUDENT
+    this.dob = dob;
+    this.group = group;
+}
 
     public String getDob() { return dob; }
     public void setDob(String dob) { this.dob = dob; }

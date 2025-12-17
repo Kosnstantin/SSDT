@@ -1,33 +1,34 @@
 package com.example.sms.controller;
 
 import com.example.sms.model.Group;
+import com.example.sms.model.Role;
 import com.example.sms.model.Student;
-import com.example.sms.repository.GroupRepository; // Додали репозиторій груп
+import com.example.sms.repository.GroupRepository;
 import com.example.sms.service.StudentServiceLocal;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.SessionScoped; 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
 @Named
-@SessionScoped 
-public class StudentController implements Serializable { 
+@SessionScoped
+public class StudentController implements Serializable {
 
-    private static final long serialVersionUID = 1L; 
+    private static final long serialVersionUID = 1L;
 
     @Inject
     private StudentServiceLocal studentService;
 
     @Inject
-    private GroupRepository groupRepository; // Ін'єкція репозиторію груп
+    private GroupRepository groupRepository;
 
     private List<Student> students;
-    private List<Group> allGroups; // Список для випадаючого меню
-    private Student currentStudent; // Тут зберігається студент, якого редагуємо
-    
-    private Integer selectedGroupId; // Тут зберігається ID вибраної групи
+    private List<Group> allGroups;
+    private Student currentStudent;
+
+    private Integer selectedGroupId;
 
     @PostConstruct
     public void init() {
@@ -43,45 +44,58 @@ public class StudentController implements Serializable {
         this.allGroups = groupRepository.findAll();
     }
 
-    // Метод для додавання (створює порожній об'єкт)
+    // Підготовка до створення
     public String prepareCreate() {
-        this.currentStudent = new Student(); 
-        this.selectedGroupId = null; // Очищаємо вибір групи
+        this.currentStudent = new Student();
+        this.selectedGroupId = null;
         return "student-edit?faces-redirect=true";
     }
 
-    // Метод для редагування (запам'ятовує вибраного студента)
+    // Підготовка до редагування
     public String prepareEdit(Student s) {
-        this.currentStudent = s; // "кладемо" студента в пам'ять сесії
-        
-        // Якщо у студента є група, встановлюємо її ID у випадаючий список
+        this.currentStudent = s;
+
         if (s.getGroup() != null) {
             this.selectedGroupId = s.getGroup().getId();
         } else {
             this.selectedGroupId = null;
         }
-        
-        return "student-edit?faces-redirect=true"; // І переходимо на сторінку
+
+        return "student-edit?faces-redirect=true";
     }
 
+    // ЗБЕРЕЖЕННЯ
     public String save() {
-        // 1. Знаходимо об'єкт групи за вибраним ID
+        // 1. Встановлюємо групу
         if (selectedGroupId != null) {
             groupRepository.findById(selectedGroupId).ifPresent(g -> currentStudent.setGroup(g));
         } else {
             currentStudent.setGroup(null);
         }
 
-        // 2. Зберігаємо студента
+        // 2. Встановлюємо роль
+        currentStudent.setRole(Role.STUDENT);
+
+        // 3. ЛОГІКА ПАРОЛЯ
         if (currentStudent.getId() == null) {
+            // СТВОРЕННЯ: Просто зберігаємо (пароль тут обов'язковий через форму)
             studentService.createStudent(currentStudent);
         } else {
+            // РЕДАГУВАННЯ: Перевіряємо пароль
+            if (currentStudent.getPassword() == null || currentStudent.getPassword().isEmpty()) {
+                // Якщо поле пусте - дістаємо старий пароль з БД
+                Student oldVersion = studentService.findStudent(currentStudent.getId());
+                if (oldVersion != null) {
+                    currentStudent.setPassword(oldVersion.getPassword());
+                }
+            }
+            // Якщо поле НЕ пусте - значить користувач ввів новий пароль, він запишеться сам
+
             studentService.updateStudent(currentStudent.getId(), currentStudent);
         }
-        
+
         loadStudents();
-        // Після збереження можна очистити currentStudent, щоб не тримати сміття в сесії
-        this.currentStudent = new Student(); 
+        this.currentStudent = new Student();
         return "students-list?faces-redirect=true";
     }
 
@@ -91,12 +105,27 @@ public class StudentController implements Serializable {
     }
 
     // Геттери та сеттери
-    public List<Student> getStudents() { return students; }
-    public Student getCurrentStudent() { return currentStudent; }
-    public void setCurrentStudent(Student currentStudent) { this.currentStudent = currentStudent; }
-    
-    public List<Group> getAllGroups() { return allGroups; } 
-    
-    public Integer getSelectedGroupId() { return selectedGroupId; }
-    public void setSelectedGroupId(Integer selectedGroupId) { this.selectedGroupId = selectedGroupId; }
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public Student getCurrentStudent() {
+        return currentStudent;
+    }
+
+    public void setCurrentStudent(Student currentStudent) {
+        this.currentStudent = currentStudent;
+    }
+
+    public List<Group> getAllGroups() {
+        return allGroups;
+    }
+
+    public Integer getSelectedGroupId() {
+        return selectedGroupId;
+    }
+
+    public void setSelectedGroupId(Integer selectedGroupId) {
+        this.selectedGroupId = selectedGroupId;
+    }
 }

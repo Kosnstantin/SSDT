@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="template.xhtml">
+
+    <ui:define name="title">Manage Enrollments</ui:define>
+
+    <ui:define name="content">
+        <h2>Study Plan Management</h2>
+        <p>Assign students to courses here.</p>
+        
+        <h:messages globalOnly="true" style="color:red; margin-bottom:10px;"/>
+
+        <div style="background: #f8f9fa; padding: 20px; border: 1px solid #ddd; margin-bottom: 20px; border-radius: 5px;">
+            <h3>Enroll Student</h3>
+            <h:form>
+                <h:panelGrid columns="4" cellpadding="10">
+                    
+                    <h:panelGroup>
+                        <h:outputLabel value="Student:" style="font-weight:bold; display:block;"/>
+                        <h:selectOneMenu value="#{enrollmentController.selectedStudentId}" required="true" style="padding:5px;">
+                            <f:selectItem itemLabel="-- Select Student --" itemValue="#{null}"/>
+                            <f:selectItems value="#{enrollmentController.allStudents}" var="s" 
+                                           itemLabel="#{s.firstName} #{s.lastName} (#{s.group.name})" itemValue="#{s.id}"/>
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value="Course:" style="font-weight:bold; display:block;"/>
+                        <h:selectOneMenu value="#{enrollmentController.selectedCourseId}" required="true" style="padding:5px;">
+                            <f:selectItem itemLabel="-- Select Course --" itemValue="#{null}"/>
+                            <f:selectItems value="#{enrollmentController.allCourses}" var="c" 
+                                           itemLabel="#{c.title} (#{c.code})" itemValue="#{c.id}"/>
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+
+                    <h:panelGroup>
+                        <h:outputLabel value="Semester:" style="font-weight:bold; display:block;"/>
+                        <h:inputText value="#{enrollmentController.semester}" required="true" style="padding:5px;"/>
+                    </h:panelGroup>
+
+                    <h:commandButton value="Enroll" action="#{enrollmentController.enroll}" 
+                                     style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-top: 15px;"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
+
+        <h3>Current Enrollments</h3>
+        <h:form>
+            <h:dataTable value="#{enrollmentController.allEnrollments}" var="e" 
+                         styleClass="table" border="1" style="width:100%; border-collapse: collapse;">
+                
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    #{e.id}
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Student</f:facet>
+                    <b>#{e.student.firstName} #{e.student.lastName}</b>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Course</f:facet>
+                    #{e.course.title}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Instructor</f:facet>
+                    #{e.course.teacher.firstName} #{e.course.teacher.lastName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Semester</f:facet>
+                    #{e.semester}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:commandButton value="Remove" action="#{enrollmentController.delete(e.id)}" 
+                                     onclick="return confirm('Are you sure? Grades will be lost!');"
+                                     style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+                        <f:ajax render="@form"/>
+                    </h:commandButton>
+                </h:column>
+
+            </h:dataTable>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
